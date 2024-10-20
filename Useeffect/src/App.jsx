@@ -1,20 +1,24 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react'
 const App = () => {
-  const [num, setNum] = useState(0)
-  const add = () => {
-    setNum(num + 1)
+  const [data, setData] = useState([])
+  const getData = () => {
+    fetch('https://jsonplaceholder.typicode.com/todos')
+      .then(response => response.json())
+      .then(json => setData(json))
   }
 
   useEffect(() => {
-    if (num === 10) {
-      console.log("number is 10")
-    }
-  }, [num])
+    getData()
+  }, [])
   return (
     <div>
-      <h1>{num}</h1>
-      <button onClick={add}>Add </button>
+      <h1>Fetching</h1>
+      {
+        data.map(item => {
+          return <h2 key={item.id}> {item.title} </h2>
+        })
+      }
     </div>
   )
 }
